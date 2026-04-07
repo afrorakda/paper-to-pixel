@@ -5,39 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>SVG Trimmer</title>
     <style>
-        :root { --main: #333; --bg: #fff; --accent: #eee; --radius: 15px; }
+        :root { --main: #333; --bg: #fff; --radius: 15px; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body {
-            font-family: -apple-system, sans-serif;
-            background-color: var(--bg);
-            margin: 0; padding: 40px 20px;
-            display: flex; justify-content: center;
-        }
+        body { font-family: sans-serif; background: var(--bg); margin: 0; padding: 40px 20px; display: flex; justify-content: center; }
         .container { width: 100%; max-width: 400px; text-align: center; }
         textarea {
             width: 100%; height: 160px; padding: 15px; margin-bottom: 20px;
-            border: 2px solid var(--accent); border-radius: var(--radius);
-            background: #fafafa; font-size: 16px; font-family: monospace;
-            -webkit-user-select: text !important;
+            border: 2px solid #eee; border-radius: var(--radius);
+            background: #fafafa; font-size: 16px; outline: none;
         }
         .stat { background: #f0f0f0; padding: 15px; border-radius: var(--radius); font-weight: 800; margin-bottom: 20px; }
-        
-        /* 100% 疎通した <a> タグボタン */
-        .btn-link {
-            display: block; width: 100%; padding: 20px;
-            background: var(--main); color: #fff;
-            text-decoration: none; border-radius: var(--radius);
-            font-weight: 800; font-size: 1rem; margin-bottom: 15px;
+        .btn {
+            display: block; width: 100%; padding: 20px; background: var(--main); color: #fff;
+            text-decoration: none; border-radius: var(--radius); font-weight: 800; margin-bottom: 15px;
         }
-        .btn-link:active { opacity: 0.7; }
-        .btn-gray { background: #eee; color: var(--main); }
-
-        #modal {
-            display: none; position: fixed; top: 0; left: 0; 
-            width: 100%; height: 100%; background: rgba(0,0,0,0.8);
-            justify-content: center; align-items: center; z-index: 1000;
-        }
-        .modal-c { background: #fff; padding: 30px; border-radius: var(--radius); width: 85%; }
     </style>
 </head>
 <body>
@@ -46,49 +27,50 @@
     <h1>SVG Trimmer</h1>
     <textarea id="svgInput" placeholder="Paste SVG here..."></textarea>
     <div class="stat" id="statLabel">Reduced: --- %</div>
-
-    <a href="javascript:void(0)" class="btn-link" onclick="shaveSVG()">SHAVE & COPY</a>
     
-    <a href="javascript:void(0)" class="btn-link btn-gray" onclick="document.getElementById('modal').style.display='flex'">Add to Home Screen</a>
-</div>
-
-<div id="modal" onclick="this.style.display='none'">
-    <div class="modal-c" onclick="event.stopPropagation()">
-        <h3>📱 Install</h3>
-        <p>Tap Share > Add to Home Screen.</p>
-        <a href="javascript:void(0)" class="btn-link btn-gray" style="padding:10px;" onclick="document.getElementById('modal').style.display='none'">Close</a>
-    </div>
+    <a href="javascript:void(0)" class="btn" onclick="goShave()">SHAVE & COPY</a>
+    
+    <a href="javascript:void(0)" class="btn" style="background:#eee; color:#333;" onclick="alert('Working')">TEST BUTTON</a>
 </div>
 
 <script>
-    function shaveSVG() {
-        var el = document.getElementById('svgInput');
-        var raw = el.value.trim();
-        if (!raw) { alert('Paste SVG first'); return; }
+    function goShave() {
+        var input = document.getElementById('svgInput');
+        var label = document.getElementById('statLabel');
+        var str = input.value.trim();
+        
+        if(!str) { alert('Paste SVG'); return; }
 
         try {
-            var c = raw;
-            // 一つずつ確実に置換
-            c = c.replace(/<\?xml.*?\?>/gi, '');
-            c = c.replace(/<!DOCTYPE.*?>/gi, '');
-            c = c.replace(//g, '');
-            c = c.replace(/\s(id|class|version|xmlns:xlink|xml:space|enable-background|sodipodi:docname|inkscape:version|x|y|style)=".*?"/gi, ' ');
-            c = c.replace(/(\d+\.\d{3,})/g, function(m) { return parseFloat(m).toFixed(2); });
-            c = c.replace(/>\s+</g, '><');
-            c = c.trim();
+            // 正規表現を使わず、改行とスペースを1つずつ消す超・原始的ループ
+            var clean = "";
+            var lastChar = "";
+            for (var i = 0; i < str.length; i++) {
+                var c = str[i];
+                // 改行やタブをスペース1つに置き換えるだけの超安全処理
+                if (c === '\n' || c === '\r' || c === '\t') {
+                    c = ' ';
+                }
+                // 連続するスペースを省く
+                if (!(c === ' ' && lastChar === ' ')) {
+                    clean += c;
+                }
+                lastChar = c;
+            }
 
-            var pct = Math.round(((raw.length - c.length) / raw.length) * 100);
-            document.getElementById('statLabel').innerText = "Reduced: " + (pct > 0 ? pct : 0) + "%";
+            // 削減率の表示
+            var pct = Math.round(((str.length - clean.length) / str.length) * 100);
+            label.innerText = "Reduced: " + pct + "%";
 
             // コピー
             var t = document.createElement('textarea');
-            t.value = c;
+            t.value = clean;
             document.body.appendChild(t);
             t.select();
-            var ok = document.execCommand('copy');
+            document.execCommand('copy');
             document.body.removeChild(t);
 
-            alert('Success: ' + pct + '% Reduced & Copied!');
+            alert('DONE: ' + pct + '%');
         } catch (e) {
             alert('Error: ' + e.message);
         }
