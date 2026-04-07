@@ -32,53 +32,52 @@
 
         .container {
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
             padding: 40px 20px;
             box-sizing: border-box;
             text-align: center;
         }
 
         h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; }
-        .subtitle { font-size: 1rem; color: var(--text-gray); font-weight: 600; margin-bottom: 30px; }
+        .subtitle { font-size: 0.95rem; color: var(--text-gray); font-weight: 600; margin-bottom: 30px; }
 
-        /* DPI Section */
-        .config-box {
+        /* Config Card */
+        .card {
             background: var(--input-bg);
-            padding: 20px;
+            padding: 18px;
             border-radius: var(--radius);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             border: 1px solid var(--border);
         }
-        .config-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-        .label { font-size: 0.85rem; font-weight: 800; color: var(--text-gray); text-transform: uppercase; }
         
-        .dpi-input-wrapper { display: flex; align-items: center; gap: 10px; }
+        .row-between { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .label { font-size: 0.8rem; font-weight: 800; color: var(--text-gray); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Unit & Bleed Toggles */
+        .toggle-group { display: flex; background: #ddd; padding: 3px; border-radius: 10px; gap: 2px; }
+        .tgl-btn {
+            border: none; background: none; padding: 4px 10px; font-size: 0.75rem; 
+            font-weight: 800; cursor: pointer; border-radius: 8px; color: var(--text-gray);
+        }
+        .tgl-btn.active { background: var(--main); color: #fff; }
+
         .dpi-field {
-            width: 85px; padding: 12px; border-radius: 12px; border: 2px solid var(--border);
-            background: #fff; font-size: 1.3rem; font-weight: 800; text-align: center;
-            color: var(--main) !important; outline: none;
+            width: 70px; padding: 8px; border-radius: 10px; border: 2px solid var(--border);
+            font-size: 1.1rem; font-weight: 800; text-align: center; outline: none;
             -webkit-appearance: none; -webkit-text-fill-color: var(--main); opacity: 1 !important;
         }
-        .unit-label { font-size: 1rem; font-weight: 800; color: var(--text-gray); }
 
-        /* Input Rows */
-        .input-row { display: flex; gap: 10px; margin-bottom: 15px; }
-        .input-group { flex: 1; position: relative; text-align: left; }
-        .input-label { font-size: 0.85rem; font-weight: 800; color: var(--main); margin-bottom: 8px; display: block; margin-left: 5px; }
+        /* Input Section */
+        .input-row { display: flex; gap: 10px; margin-bottom: 12px; }
+        .input-group { flex: 1; position: relative; }
         
         input[type="text"], input[type="number"] {
             width: 100%;
-            padding: 20px 15px;
-            padding-right: 40px;
+            padding: 18px 12px;
             border: 2px solid var(--border);
             border-radius: var(--radius);
-            background: var(--input-bg);
-            font-size: 1.4rem;
+            background: #fff;
+            font-size: 1.3rem;
             font-weight: 800;
             color: var(--main) !important;
             box-sizing: border-box;
@@ -87,64 +86,53 @@
             -webkit-text-fill-color: var(--main) !important;
             opacity: 1 !important;
         }
-        input::placeholder { color: #bbb; -webkit-text-fill-color: #bbb; }
+        input::placeholder { color: #ccc; -webkit-text-fill-color: #ccc; }
 
-        .clr-btn {
-            position: absolute; right: 10px; bottom: 15px;
-            background: none; border: none; color: #ccc;
-            font-size: 1.5rem; font-weight: 800; cursor: pointer;
-            padding: 5px; display: none; z-index: 2;
+        .clr-x {
+            position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+            background: var(--border); color: #fff; width: 18px; height: 18px;
+            border-radius: 50%; border: none; font-size: 12px; font-weight: 800;
+            cursor: pointer; display: none; line-height: 1;
         }
-        .clr-btn.active { display: block; }
+        .clr-x.active { display: block; }
 
-        /* Preset Buttons */
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px; }
+        /* Presets */
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 25px; }
         .p-btn {
-            background: var(--accent); border: none; padding: 12px; border-radius: 12px;
-            font-size: 0.9rem; font-weight: 800; color: var(--main); cursor: pointer;
+            background: var(--accent); border: none; padding: 12px 5px; border-radius: 12px;
+            font-size: 0.85rem; font-weight: 800; color: var(--main); cursor: pointer;
         }
-        .p-btn:active { transform: scale(0.95); opacity: 0.8; }
+        .p-btn:active { transform: scale(0.95); background: var(--border); }
 
-        /* Result Display */
-        .res-box {
-            background: var(--main); color: #fff; padding: 30px 20px;
+        /* Result Area */
+        .result-box {
+            background: var(--main); color: #fff; padding: 25px 15px;
             border-radius: var(--radius); margin-top: 10px; cursor: pointer;
         }
-        .res-box:active { transform: scale(0.98); }
-        .res-label { font-size: 0.8rem; font-weight: 700; opacity: 0.6; margin-bottom: 10px; display: block; }
-        .res-val { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
+        .result-box:active { transform: scale(0.98); }
+        .res-label { font-size: 0.75rem; font-weight: 700; opacity: 0.5; margin-bottom: 8px; display: block; }
+        .res-val { font-size: 1.8rem; font-weight: 800; }
 
         #toast {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--main); color: #fff; padding: 12px 24px;
-            border-radius: 20px; font-size: 0.9rem; font-weight: 700;
+            background: var(--main); color: #fff; padding: 10px 20px;
+            border-radius: 20px; font-size: 0.85rem; font-weight: 700;
             opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 1000;
         }
 
-        /* Footer & Modal */
-        footer { margin-top: 60px; font-size: 12px; color: #777; line-height: 1.8; font-weight: 500; }
+        footer { margin-top: 50px; font-size: 11px; color: #777; line-height: 1.8; font-weight: 500; }
         footer a { color: inherit; text-decoration: underline; }
-        .footer-btns { margin-top: 30px; }
-        .kofi-link {
+        .footer-btns { margin-top: 25px; }
+        .kofi-btn {
             display: inline-block; background: var(--main); color: #fff;
-            padding: 14px 28px; border-radius: var(--radius);
-            text-decoration: none; font-weight: bold; font-size: 15px; margin-bottom: 15px;
+            padding: 12px 24px; border-radius: var(--radius);
+            text-decoration: none; font-weight: bold; font-size: 14px; margin-bottom: 15px;
         }
-        .install-btn {
-            display: block; width: 75%; margin: 0 auto; background: var(--accent);
-            color: var(--main); border: none; padding: 12px;
-            border-radius: var(--radius); font-weight: 800; font-size: 14px; cursor: pointer;
+        .home-btn {
+            display: block; width: 65%; margin: 0 auto; background: var(--accent);
+            color: var(--main); border: none; padding: 10px;
+            border-radius: var(--radius); font-weight: 800; font-size: 13px; cursor: pointer;
         }
-
-        #modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 100;
-        }
-        .modal-content {
-            background: #fff; width: 85%; max-width: 340px; padding: 35px;
-            border-radius: var(--radius); text-align: left; position: relative;
-        }
-        .close-x { position: absolute; top: 15px; right: 20px; font-size: 24px; color: #888; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -155,51 +143,58 @@
     <h1>Paper to Pixel</h1>
     <p class="subtitle">Resolution calculator for creators.</p>
 
-    <div class="config-box">
-        <div class="config-row">
-            <span class="label">Resolution</span>
-            <div class="dpi-input-wrapper">
-                <input type="number" id="dpi" value="350" class="dpi-field" oninput="run()">
-                <span class="unit-label">DPI</span>
+    <div class="card">
+        <div class="row-between">
+            <span class="label">Unit</span>
+            <div class="toggle-group">
+                <button class="tgl-btn active" id="btn-mm" onclick="setUnit('mm')">mm</button>
+                <button class="tgl-btn" id="btn-in" onclick="setUnit('in')">inch</button>
             </div>
         </div>
-        <div class="grid-3" style="margin-bottom: 0;">
-            <button class="p-btn" onclick="setD(72)">72</button>
-            <button class="p-btn" onclick="setD(350)">350</button>
-            <button class="p-btn" onclick="setD(600)">600</button>
+        <div class="row-between">
+            <span class="label">Bleed (+3mm)</span>
+            <div class="toggle-group">
+                <button class="tgl-btn active" id="btn-b0" onclick="setBleed(false)">OFF</button>
+                <button class="tgl-btn" id="btn-b1" onclick="setBleed(true)">ON</button>
+            </div>
+        </div>
+        <div class="row-between" style="margin-bottom: 0;">
+            <span class="label">Resolution</span>
+            <div>
+                <input type="number" id="dpi" value="350" class="dpi-field" oninput="calc()">
+                <span style="font-size: 0.8rem; font-weight: 800; margin-left: 4px;">DPI</span>
+            </div>
         </div>
     </div>
 
     <div class="input-row">
         <div class="input-group">
-            <span class="input-label">Width (mm)</span>
-            <input type="text" id="wIn" placeholder="#bbb" inputmode="decimal" oninput="upd()">
-            <button class="clr-btn" id="clr-w" onclick="cls('wIn')">×</button>
+            <input type="text" id="wIn" placeholder="Width" inputmode="decimal" oninput="upd()">
+            <button class="clr-x" id="clr-w" onclick="cls('wIn')">×</button>
         </div>
         <div class="input-group">
-            <span class="input-label">Height (mm)</span>
-            <input type="text" id="hIn" placeholder="#bbb" inputmode="decimal" oninput="upd()">
-            <button class="clr-btn" id="clr-h" onclick="cls('hIn')">×</button>
+            <input type="text" id="hIn" placeholder="Height" inputmode="decimal" oninput="upd()">
+            <button class="clr-x" id="clr-h" onclick="cls('hIn')">×</button>
         </div>
     </div>
 
-    <div class="grid-3">
-        <button class="p-btn" onclick="setP(210, 297)">A4</button>
-        <button class="p-btn" onclick="setP(148, 210)">A5</button>
-        <button class="p-btn" onclick="setP(182, 257)">B5</button>
-        <button class="p-btn" onclick="setP(128, 182)">B6</button>
-        <button class="p-btn" onclick="setP(100, 148)">Post</button>
-        <button class="p-btn" onclick="setP(91, 55)">Card</button>
+    <div class="grid">
+        <button class="p-btn" onclick="setP(210, 297, 8.27, 11.69)">A4</button>
+        <button class="p-btn" onclick="setP(148, 210, 5.83, 8.27)">A5</button>
+        <button class="p-btn" onclick="setP(182, 257, 7.17, 10.12)">B5</button>
+        <button class="p-btn" onclick="setP(128, 182, 5.04, 7.17)">B6</button>
+        <button class="p-btn" onclick="setP(100, 148, 3.94, 5.83)">Post</button>
+        <button class="p-btn" onclick="setP(91, 55, 3.58, 2.17)">Card</button>
     </div>
 
-    <div class="res-box" onclick="cp()">
+    <div class="result-box" onclick="cp()">
         <span class="res-label">Required Pixels (Tap to copy)</span>
         <div class="res-val" id="res">0 × 0 px</div>
     </div>
 
     <div class="footer-btns">
-        <a href="https://ko-fi.com/afrorakda" target="_blank" class="kofi-link">☕️buy me a coffee</a>
-        <button class="install-btn" onclick="showM()">Add to Home Screen</button>
+        <a href="https://ko-fi.com/afrorakda" target="_blank" class="kofi-btn">☕️buy me a coffee</a>
+        <button class="home-btn" onclick="alert('Add to Home Screen via browser menu')">Add to Home Screen</button>
     </div>
 
     <footer>
@@ -208,64 +203,70 @@
     </footer>
 </div>
 
-<div id="modal" onclick="hideM()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close-x" onclick="hideM()">×</span>
-        <h3>📱 Install</h3>
-        <p>Add to home screen.</p>
-        <p>🍏 <strong>iPhone (Safari):</strong><br>Tap Share, then Add to Home Screen.</p>
-        <p>🤖 <strong>Android (Chrome):</strong><br>Tap Menu (⋮), then Add to Home Screen.</p>
-    </div>
-</div>
-
 <script>
+    let unit = 'mm';
+    let bleed = false;
     const wEl = document.getElementById('wIn');
     const hEl = document.getElementById('hIn');
     const dEl = document.getElementById('dpi');
     const rEl = document.getElementById('res');
-    const tEl = document.getElementById('toast');
+
+    function setUnit(u) {
+        unit = u;
+        document.getElementById('btn-mm').classList.toggle('active', u==='mm');
+        document.getElementById('btn-in').classList.toggle('active', u==='in');
+        calc();
+    }
+
+    function setBleed(b) {
+        bleed = b;
+        document.getElementById('btn-b0').classList.toggle('active', !b);
+        document.getElementById('btn-b1').classList.toggle('active', b);
+        calc();
+    }
 
     function upd() {
         wEl.value = wEl.value.replace(/[^0-9.]/g, '');
         hEl.value = hEl.value.replace(/[^0-9.]/g, '');
         document.getElementById('clr-w').classList.toggle('active', wEl.value !== '');
         document.getElementById('clr-h').classList.toggle('active', hEl.value !== '');
-        run();
+        calc();
     }
 
-    function cls(id) {
-        document.getElementById(id).value = '';
+    function cls(id) { document.getElementById(id).value = ''; upd(); }
+
+    function setP(wm, hm, wi, hi) {
+        wEl.value = (unit === 'mm') ? wm : wi;
+        hEl.value = (unit === 'mm') ? hm : hi;
         upd();
-        document.getElementById(id).focus();
     }
 
-    function setP(w, h) { wEl.value = w; hEl.value = h; upd(); }
-    function setD(v) { dEl.value = v; run(); }
-
-    function run() {
-        const w = parseFloat(wEl.value) || 0;
-        const h = parseFloat(hEl.value) || 0;
+    function calc() {
+        let w = parseFloat(wEl.value) || 0;
+        let h = parseFloat(hEl.value) || 0;
         const d = parseFloat(dEl.value) || 0;
+
         if (w > 0 && h > 0 && d > 0) {
-            const pw = Math.round((w * d) / 25.4);
-            const ph = Math.round((h * d) / 25.4);
+            if (bleed) {
+                // Bleed +3mm on each side = +6mm total or +0.25 inch
+                w += (unit === 'mm') ? 6 : 0.25;
+                h += (unit === 'mm') ? 6 : 0.25;
+            }
+            const pw = (unit === 'mm') ? Math.round((w * d) / 25.4) : Math.round(w * d);
+            const ph = (unit === 'mm') ? Math.round((h * d) / 25.4) : Math.round(h * d);
             rEl.innerText = pw + ' × ' + ph + ' px';
         } else {
             rEl.innerText = '0 × 0 px';
         }
     }
 
-    async function cp() {
+    function cp() {
         if (rEl.innerText === '0 × 0 px') return;
-        try {
-            await navigator.clipboard.writeText(rEl.innerText.replace(' px', ''));
-            tEl.style.opacity = '1';
-            setTimeout(() => tEl.style.opacity = '0', 1500);
-        } catch (e) {}
+        navigator.clipboard.writeText(rEl.innerText.replace(' px', ''));
+        const t = document.getElementById('toast');
+        t.style.opacity = '1';
+        setTimeout(() => t.style.opacity = '0', 1500);
     }
-
-    function showM() { document.getElementById('modal').style.display = 'flex'; }
-    function hideM() { document.getElementById('modal').style.display = 'none'; }
 </script>
 
 </body>
