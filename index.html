@@ -44,7 +44,7 @@
         h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 5px; letter-spacing: -1px; }
         .subtitle { font-size: 0.9rem; color: var(--text-gray); font-weight: 600; margin-bottom: 25px; }
 
-        /* Top Config Swtiches */
+        /* Config Bar */
         .config-bar {
             display: flex;
             justify-content: space-between;
@@ -96,7 +96,7 @@
         input::placeholder { color: var(--placeholder); -webkit-text-fill-color: var(--placeholder); }
 
         .clr-btn {
-            position: absolute; right: 10px; top: 50%; transform: translateY(0%); /* Adjusted for label */
+            position: absolute; right: 10px; top: 50%;
             margin-top: 8px;
             background: #ddd; color: #fff; width: 18px; height: 18px;
             border-radius: 50%; border: none; font-size: 10px; font-weight: 800;
@@ -108,11 +108,11 @@
         .preset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
         .p-btn {
             background: var(--accent); border: none; padding: 12px 5px; border-radius: 12px;
-            font-size: 0.85rem; font-weight: 800; color: var(--main); cursor: pointer;
+            font-size: 0.8rem; font-weight: 800; color: var(--main); cursor: pointer;
         }
         .p-btn:active { transform: scale(0.95); background: var(--border); }
 
-        /* DPI Area (Sub-priority) */
+        /* DPI Area */
         .dpi-section {
             background: var(--input-bg);
             padding: 15px;
@@ -131,16 +131,22 @@
             flex: 1; border: none; background: #ddd; padding: 8px; border-radius: 8px;
             font-size: 0.75rem; font-weight: 800; color: var(--main); cursor: pointer;
         }
+        .dpi-q-btn.active { background: var(--main); color: #fff; }
 
-        /* Result Area (Main Visual) */
+        /* Result Area */
         .result-box {
             background: var(--main); color: #fff; padding: 25px 15px;
             border-radius: var(--radius); margin-top: auto; cursor: pointer;
-            transition: transform 0.1s;
+            position: relative; overflow: hidden;
         }
         .result-box:active { transform: scale(0.98); }
         .res-label { font-size: 0.75rem; font-weight: 700; opacity: 0.5; margin-bottom: 8px; display: block; }
         .res-val { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
+        .bleed-badge {
+            position: absolute; top: 8px; right: 12px; font-size: 0.6rem; 
+            font-weight: 800; color: #fff; opacity: 0; transition: opacity 0.2s;
+        }
+        .bleed-badge.visible { opacity: 0.4; }
 
         /* Common Elements */
         #toast {
@@ -164,7 +170,6 @@
             border-radius: var(--radius); font-weight: 800; font-size: 13px; cursor: pointer;
         }
 
-        /* Modal Style */
         #modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 100;
@@ -222,7 +227,7 @@
         <button class="p-btn" onclick="setP(182, 257, 7.17, 10.12)">B5</button>
         <button class="p-btn" onclick="setP(128, 182, 5.04, 7.17)">B6</button>
         <button class="p-btn" onclick="setP(100, 148, 3.94, 5.83)">Post</button>
-        <button class="p-btn" onclick="setP(91, 55, 3.58, 2.17)">Card</button>
+        <button class="p-btn" id="card-btn" onclick="setCard()">Card (JP)</button>
     </div>
 
     <div class="dpi-section">
@@ -235,13 +240,14 @@
             <span class="config-label">DPI</span>
         </div>
         <div class="dpi-quick-row">
-            <button class="dpi-q-btn" onclick="setD(72)">72</button>
-            <button class="dpi-q-btn" onclick="setD(350)">350</button>
-            <button class="dpi-q-btn" onclick="setD(600)">600</button>
+            <button class="dpi-q-btn" id="dq-72" onclick="setD(72)">72</button>
+            <button class="dpi-q-btn active" id="dq-350" onclick="setD(350)">350</button>
+            <button class="dpi-q-btn" id="dq-600" onclick="setD(600)">600</button>
         </div>
     </div>
 
     <div class="result-box" onclick="cp()">
+        <span class="bleed-badge" id="bleed-badge">+3mm bleed included</span>
         <span class="res-label">Required Pixels (Tap to copy)</span>
         <div class="res-val" id="res">0 × 0 px</div>
     </div>
@@ -261,9 +267,9 @@
     <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-x" onclick="hideM()">×</span>
         <h3>📱 Install</h3>
-        <p>Add to your home screen for quick access.</p>
-        <p>🍏 <strong>iPhone (Safari):</strong><br>Tap the Share button <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8'/%3E%3Cpolyline points='16 6 12 2 8 6'/%3E%3Cline x1='12' y1='2' x2='12' y2='15'/%3E%3C/svg%3E" style="vertical-align: middle;"> , then "Add to Home Screen".</p>
-        <p>🤖 <strong>Android (Chrome):</strong><br>Tap the Menu icon (⋮), then "Add to Home Screen".</p>
+        <p>Add to home screen for quick access.</p>
+        <p>🍏 <strong>iPhone (Safari):</strong><br>Tap Share <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8'/%3E%3Cpolyline points='16 6 12 2 8 6'/%3E%3Cline x1='12' y1='2' x2='12' y2='15'/%3E%3C/svg%3E" style="vertical-align: middle;">, then "Add to Home Screen".</p>
+        <p>🤖 <strong>Android (Chrome):</strong><br>Tap Menu (⋮), then "Add to Home Screen".</p>
     </div>
 </div>
 
@@ -274,9 +280,10 @@
     const hEl = document.getElementById('hIn');
     const dEl = document.getElementById('dpi');
     const rEl = document.getElementById('res');
+    const bBadge = document.getElementById('bleed-badge');
+    const cardBtn = document.getElementById('card-btn');
 
     function setUnit(u) {
-        // Automatic conversion to prevent massive jumps
         let w = parseFloat(wEl.value) || 0;
         let h = parseFloat(hEl.value) || 0;
         if (w > 0 && h > 0) {
@@ -291,6 +298,7 @@
         unit = u;
         document.getElementById('btn-mm').classList.toggle('active', u==='mm');
         document.getElementById('btn-in').classList.toggle('active', u==='in');
+        cardBtn.innerText = (unit === 'mm') ? 'Card (JP)' : 'Card (US)';
         upd();
     }
 
@@ -298,6 +306,7 @@
         bleed = b;
         document.getElementById('btn-b0').classList.toggle('active', !b);
         document.getElementById('btn-b1').classList.toggle('active', b);
+        bBadge.classList.toggle('visible', b);
         upd();
     }
 
@@ -307,6 +316,11 @@
         document.getElementById('clr-w').classList.toggle('active', wEl.value !== '');
         document.getElementById('clr-h').classList.toggle('active', hEl.value !== '');
         document.getElementById('clr-d').classList.toggle('active', dEl.value !== '');
+        
+        const dVal = parseInt(dEl.value);
+        [72, 350, 600].forEach(v => {
+            document.getElementById('dq-' + v).classList.toggle('active', dVal === v);
+        });
         calc();
     }
 
@@ -316,6 +330,11 @@
         wEl.value = (unit === 'mm') ? wm : wi;
         hEl.value = (unit === 'mm') ? hm : hi;
         upd();
+    }
+
+    function setCard() {
+        if (unit === 'mm') setP(91, 55);
+        else setP(0, 0, 3.5, 2);
     }
 
     function calc() {
