@@ -2,98 +2,159 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVG Trimmer - SIMPLE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SVG Trimmer</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; background: #fff; color: #333; }
-        .box { max-width: 400px; margin: 0 auto; }
-        h1 { font-size: 1.2rem; }
-        
-        /* テキストエリアを最優先 */
+        :root {
+            --main: #333;
+            --bg: #fff;
+            --accent: #eee;
+            --radius: 15px;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 5px; }
+        .sub { font-size: 0.8rem; color: #888; margin-bottom: 30px; }
+
+        /* テキストエリア */
         textarea {
-            width: 100%; height: 150px;
-            border: 2px solid #ccc; border-radius: 10px;
-            padding: 10px; font-size: 16px; /* iOSのズーム防止 */
+            width: 100%; height: 160px;
+            padding: 15px; margin-bottom: 20px;
+            border: 2px solid var(--accent);
+            border-radius: var(--radius);
+            background: #fafafa;
+            font-size: 16px; /* ズーム防止 */
+            font-family: monospace;
+            outline: none;
+            -webkit-user-select: text !important;
+            user-select: text !important;
+        }
+
+        /* 統計表示 */
+        .stat-box {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: var(--radius);
+            font-weight: 800;
+            font-size: 0.9rem;
             margin-bottom: 20px;
-            display: block;
         }
 
-        /* 巨大で原始的なボタン */
-        .btn-link {
+        /* 黒ボタン (Fridge Combo Standard) */
+        .btn {
             display: block; width: 100%; padding: 20px;
-            background: #333; color: #fff; text-align: center;
-            text-decoration: none; border-radius: 15px;
-            font-weight: bold; font-size: 1.2rem;
+            background: var(--main); color: #fff;
+            text-decoration: none; border-radius: var(--radius);
+            font-weight: 800; font-size: 1rem;
+            border: none; cursor: pointer;
             margin-bottom: 15px;
+            -webkit-appearance: none;
         }
+        .btn:active { opacity: 0.7; transform: scale(0.98); }
 
-        .stat-view {
-            padding: 20px; background: #eee; border-radius: 10px;
-            text-align: center; font-weight: bold; margin-bottom: 20px;
-        }
+        .btn-gray { background: #eee; color: var(--main); }
 
-        /* モーダルも単純に */
-        #mdl {
+        /* モーダル */
+        #modal {
             display: none; position: fixed; top: 0; left: 0; 
             width: 100%; height: 100%; background: rgba(0,0,0,0.8);
-            justify-content: center; align-items: center; z-index: 999;
+            justify-content: center; align-items: center; z-index: 1000;
         }
+        .modal-content {
+            background: #fff; padding: 30px; border-radius: var(--radius);
+            width: 85%; max-width: 320px; text-align: left;
+        }
+
+        footer { margin-top: 40px; font-size: 10px; color: #aaa; line-height: 1.6; }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <h1>SVG Trimmer (SIMPLE TEST)</h1>
+<div class="container">
+    <h1>SVG Trimmer</h1>
+    <p class="sub">Minimalize your SVG code instantly.</p>
     
-    <textarea id="txtIn" placeholder="PASTE SVG HERE"></textarea>
+    <textarea id="svgInput" placeholder="Paste SVG Code here..."></textarea>
 
-    <a href="javascript:void(0)" class="btn-link" onclick="shaveNow()">1. SHAVE & COPY</a>
+    <div class="stat-box" id="statLabel">Reduced: --- %</div>
 
-    <div class="stat-view" id="resVal">Reduced: --- %</div>
+    <button class="btn" onclick="shaveSVG()">SHAVE & COPY</button>
 
-    <a href="javascript:void(0)" class="btn-link" style="background:#aaa" onclick="document.getElementById('mdl').style.display='flex'">2. OPEN MODAL</a>
+    <button class="btn btn-gray" onclick="document.getElementById('modal').style.display='flex'">Add to Home Screen</button>
     
-    <p style="font-size: 10px; color: #999; text-align: center;">afrorakda &copy; 2026</p>
+    <footer>
+        No login / No tracking / No ads / Browser only<br>
+        afrorakda &copy; 2026
+    </footer>
 </div>
 
-<div id="mdl" onclick="this.style.display='none'">
-    <div style="background:#fff; padding:40px; border-radius:20px; width:80%;">
-        <h3>MODAL WORKS</h3>
-        <p>Close by tapping outside.</p>
+<div id="modal" onclick="this.style.display='none'">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h3 style="margin-top:0">📱 Install</h3>
+        <p style="font-size:0.85rem">Add to your home screen.</p>
+        <p style="font-size:0.8rem">🍏 <strong>iPhone:</strong> Tap Share, then Add to Home Screen.</p>
+        <button class="btn btn-gray" style="padding:10px; margin-top:10px;" onclick="document.getElementById('modal').style.display='none'">Close</button>
     </div>
 </div>
 
 <script>
-    function shaveNow() {
-        var input = document.getElementById('txtIn');
-        var val = input.value.trim();
-        var res = document.getElementById('resVal');
+    function shaveSVG() {
+        var input = document.getElementById('svgInput');
+        var raw = input.value.trim();
+        var label = document.getElementById('statLabel');
 
-        if(!val) {
-            alert('EMPTY');
-            return;
-        }
+        if(!raw) return;
 
         try {
-            // 最も単純な置換（スペースを消すだけ）でテスト
-            var cleaned = val.replace(/\s+/g, ' ');
-            
-            // 削減率を表示
-            var pct = Math.round(((val.length - cleaned.length) / val.length) * 100);
-            res.innerText = "Reduced: " + pct + "%";
+            // 本気洗浄ロジック
+            var clean = raw
+                .replace(/<\?xml.*?\?>/gi, '')
+                .replace(/<!DOCTYPE.*?>/gi, '')
+                .replace(//g, '')
+                // 不要な属性を削除
+                .replace(/\s(id|class|version|xmlns:xlink|xml:space|enable-background|sodipodi:docname|inkscape:version|x|y|style)=".*?"/gi, '')
+                // 小数点を2桁に丸める
+                .replace(/(\d+\.\d{3,})/g, function(m) { return parseFloat(parseFloat(m).toFixed(2)); })
+                // 改行と空白を詰める
+                .replace(/>\s+</g, '><')
+                .trim();
 
-            // コピー
+            // 削減率
+            var pct = Math.round(((raw.length - clean.length) / raw.length) * 100);
+            label.innerText = "Reduced: " + (pct > 0 ? pct : 0) + "%";
+
+            // コピー処理
             var tmp = document.createElement('textarea');
-            tmp.value = cleaned;
+            tmp.value = clean;
             document.body.appendChild(tmp);
             tmp.select();
             document.execCommand('copy');
             document.body.removeChild(tmp);
 
-            alert('DONE & COPIED: ' + pct + '%');
+            alert('DONE: ' + pct + '% Reduced & Copied!');
 
         } catch(e) {
-            alert('ERROR: ' + e.message);
+            alert('Error: ' + e.message);
         }
     }
 </script>
